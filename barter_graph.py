@@ -84,18 +84,28 @@ class BarterGraph:
         self.build_graph()
 
 
-# === Использование ===
-json_file = "barter_data.json"
 
-barter = BarterGraph()
-barter.load_from_json(json_file)
+import argparse
 
-# Найдём циклы с максимальным средневзвешенным рейтингом
-cycles = barter.find_best_cycles()
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Load barter data from a JSON file.")
+    parser.add_argument("json_file", type=str, help="Path to the JSON file containing barter data.")
+    args = parser.parse_args()
+    
 
-# Выводим лучшие цепочки
-for i, (cycle, rating) in enumerate(cycles, 1):
-    print(f"🏆 Цепочка {i} (Средневзвешенный рейтинг: {rating:.2f}):")
-    for sender, item, receiver in cycle:
-        print(f"  {sender} → получает ({item}) → {receiver}")
-    print("-" * 30)
+
+    # === Использование ===
+    json_file = args.json_file
+
+    barter = BarterGraph()
+    barter.load_from_json(json_file)
+
+    # Найдём циклы с максимальным средневзвешенным рейтингом
+    cycles = barter.find_best_cycles()
+
+    # Выводим лучшие цепочки
+    for i, (cycle, rating) in enumerate(cycles, 1):
+        print(f"🏆 Цепочка {i} (Средневзвешенный рейтинг: {rating:.2f}):")
+        for sender, item, receiver in cycle:
+            print(f"  {sender} → получает ({item}) → {receiver}")
+        print("-" * 30)
